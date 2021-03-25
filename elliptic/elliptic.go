@@ -400,7 +400,7 @@ func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int) {
 
 	x3.Mod(x3, p)
 
-	y = y.ModSqrt(y, p)
+	y = y.ModSqrt(x3, p)
 
 	if y == nil {
 		return nil, nil
