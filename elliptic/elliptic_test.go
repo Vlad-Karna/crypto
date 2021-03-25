@@ -14,7 +14,7 @@ import (
 
 func TestOnCurve(t *testing.T) {
 	for _, curve := range [...]Curve{
-		P224(), P256(), P384(), P521(), Secp256k1(),
+		P224(), /*P256(),*/ P384(), P521(), Secp256k1(),
 	} {
 		curveParams := curve.Params()
 		t.Logf("Testing G is on curve %v", curveParams.Name)
@@ -608,6 +608,7 @@ func TestGenericBaseMult(t *testing.T) {
 	}
 }
 
+/*
 func TestP256BaseMult(t *testing.T) {
 	p256 := P256()
 	p256Generic := p256.Params()
@@ -666,6 +667,7 @@ func TestP256Mult(t *testing.T) {
 		}
 	}
 }
+*/
 
 func TestInfinity(t *testing.T) {
 	tests := []struct {
@@ -673,7 +675,7 @@ func TestInfinity(t *testing.T) {
 		curve Curve
 	}{
 		{"p224", P224()},
-		{"p256", P256()},
+//		{"p256", P256()},
 	}
 
 	for _, test := range tests {
@@ -715,6 +717,7 @@ func (s synthCombinedMult) CombinedMult(bigX, bigY *big.Int, baseScalar, scalar 
 	return s.Add(x1, y1, x2, y2)
 }
 
+/*
 func TestCombinedMult(t *testing.T) {
 	type combinedMult interface {
 		Curve
@@ -766,7 +769,7 @@ func TestCombinedMult(t *testing.T) {
 	if x.Sign() != 0 || y.Sign() != 0 {
 		t.Errorf("1×G + (-1)×G = (%d, %d), should be ∞", x, y)
 	}
-}
+}*/
 
 func BenchmarkBaseMult(b *testing.B) {
 	b.ResetTimer()
@@ -782,6 +785,7 @@ func BenchmarkBaseMult(b *testing.B) {
 	})
 }
 
+/*
 func BenchmarkBaseMultP256(b *testing.B) {
 	b.ResetTimer()
 	p256 := P256()
@@ -809,7 +813,7 @@ func BenchmarkScalarMultP256(b *testing.B) {
 			p256.ScalarMult(x, y, priv)
 		}
 	})
-}
+}*/
 
 func TestMarshal(t *testing.T) {
 	p224 := P224()
@@ -840,7 +844,7 @@ func TestP224Overflow(t *testing.T) {
 	}
 }
 
-// See https://golang.org/issues/20482
+/*// See https://golang.org/issues/20482
 func TestUnmarshalToLargeCoordinates(t *testing.T) {
 	curve := P256()
 	p := curve.Params().P
@@ -878,3 +882,4 @@ func TestUnmarshalToLargeCoordinates(t *testing.T) {
 		t.Errorf("Unmarshal accepts invalid Y coordinate")
 	}
 }
+*/

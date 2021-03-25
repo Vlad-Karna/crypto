@@ -22,7 +22,8 @@ type p224Curve struct {
 
 func initP224() {
 	// See FIPS 186-3, section D.2.2
-	p224.CurveParams = &CurveParams{Name: "P-224"}
+	p224.CurveParams = &CurveParams{}
+	p224.Name = "P-224"
 	p224.P, _ = new(big.Int).SetString("26959946667150639794667015087019630673557916260026308143510066298881", 10)
 	p224.N, _ = new(big.Int).SetString("26959946667150639794667015087019625940457807714424391721682722368061", 10)
 	p224.A, _ = new(big.Int).SetString("fffffffffffffffffffffffffffffffefffffffffffffffffffffffe", 16)

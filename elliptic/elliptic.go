@@ -17,6 +17,7 @@ import (
 	"io"
 	"math/big"
 	"sync"
+	stdelliptic "crypto/elliptic"
 )
 
 // A Curve represents a short-form Weierstrass curve.
@@ -40,13 +41,14 @@ type Curve interface {
 // CurveParams contains the parameters of an elliptic curve and also provides
 // a generic, non-constant time implementation of Curve.
 type CurveParams struct {
-	P       *big.Int // the order of the underlying field
+	stdelliptic.CurveParams
+/*	P       *big.Int // the order of the underlying field
 	N       *big.Int // the order of the base point
-	A       *big.Int // the coefficient of x in the curve equation
 	B       *big.Int // the constant of the curve equation
 	Gx, Gy  *big.Int // (x,y) of the base point
 	BitSize int      // the size of the underlying field
-	Name    string   // the canonical name of the curve
+	Name    string   // the canonical name of the curve*/
+	A       *big.Int // the coefficient of x in the curve equation
 }
 
 // Params returns the elliptic CurveParams of the implemented curve.
@@ -365,7 +367,7 @@ var secp256k1 *CurveParams
 
 func initAll() {
 	initP224()
-	initP256()
+//	initP256()
 	initP384()
 	initP521()
 	initSecp256k1()
@@ -373,7 +375,8 @@ func initAll() {
 
 func initP384() {
 	// See FIPS 186-3, section D.2.4
-	p384 = &CurveParams{Name: "P-384"}
+	p384 = &CurveParams{}
+	p384.Name = "P-384"
 	p384.P, _ = new(big.Int).SetString("39402006196394479212279040100143613805079739270465446667948293404245721771496870329047266088258938001861606973112319", 10)
 	p384.N, _ = new(big.Int).SetString("39402006196394479212279040100143613805079739270465446667946905279627659399113263569398956308152294913554433653942643", 10)
 	p384.A, _ = new(big.Int).SetString("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffff0000000000000000fffffffc", 16)
@@ -385,7 +388,8 @@ func initP384() {
 
 func initP521() {
 	// See FIPS 186-3, section D.2.5
-	p521 = &CurveParams{Name: "P-521"}
+	p521 = &CurveParams{}
+	p521.Name = "P-521"
 	p521.P, _ = new(big.Int).SetString("6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151", 10)
 	p521.N, _ = new(big.Int).SetString("6864797660130609714981900799081393217269435300143305409394463459185543183397655394245057746333217197532963996371363321113864768612440380340372808892707005449", 10)
 	p521.A, _ = new(big.Int).SetString("01fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc", 16)
@@ -396,7 +400,8 @@ func initP521() {
 }
 
 func initSecp256k1() {
-	secp256k1 = &CurveParams{Name: "secp256k1"}
+	secp256k1 = &CurveParams{}
+	secp256k1.Name = "secp256k1"
 	secp256k1.P, _ = new(big.Int).SetString("fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f", 16)
 	secp256k1.N, _ = new(big.Int).SetString("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", 16)
 	secp256k1.A = new(big.Int)
@@ -409,10 +414,11 @@ func initSecp256k1() {
 // P256 returns a Curve which implements P-256 (see FIPS 186-3, section D.2.3)
 //
 // The cryptographic operations are implemented using constant-time algorithms.
-func P256() Curve {
-	initonce.Do(initAll)
-	return p256
-}
+//func P256() Curve {
+//	return stdelliptic.P256()
+//	initonce.Do(initAll)
+//	return p256
+//}
 
 // P384 returns a Curve which implements P-384 (see FIPS 186-3, section D.2.4)
 //
