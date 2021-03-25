@@ -834,6 +834,25 @@ func TestMarshal(t *testing.T) {
 	}
 }
 
+func TestMarshalCompressed(t *testing.T) {
+	p224 := P224()
+	_, x, y, err := GenerateKey(p224, rand.Reader)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	serialized := MarshalCompressed(p224, x, y)
+	xx, yy := UnmarshalCompressed(p224, serialized)
+	if xx == nil {
+		t.Error("failed to unmarshal")
+		return
+	}
+	if xx.Cmp(x) != 0 || yy.Cmp(y) != 0 {
+		t.Error("unmarshal returned different values")
+		return
+	}
+}
+
 func TestP224Overflow(t *testing.T) {
 	// This tests for a specific bug in the P224 implementation.
 	p224 := P224()

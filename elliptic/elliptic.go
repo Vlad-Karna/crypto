@@ -396,11 +396,12 @@ func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int) {
 	aX.Mod(aX, p)
 
 	x3.Add(x3, aX)
+
 	x3.Add(x3, curve.Params().B)
 
 	x3.Mod(x3, p)
 
-	y = y.ModSqrt(x3, p)
+	y = x3.ModSqrt(x3, p)
 
 	if y == nil {
 		return nil, nil
